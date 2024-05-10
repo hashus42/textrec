@@ -27,9 +27,28 @@ textrec::textrec(QWidget *parent)
     setLayout(layout);
 }
 
+void textrec::mousePressEvent(QMouseEvent *event) {
+    start_x = event->pos().x();
+    start_y = event->pos().y();
+}
 
+void textrec::mouseMoveEvent(QMouseEvent *event) {
+    x_pos = event->pos().x();
+    y_pos = event->pos().y();
+
+
+}
 
 void textrec::mouseReleaseEvent(QMouseEvent *event) {
+    int rect_width = x_pos - start_x;
+    int rect_height = y_pos - start_y;
+
+    QRect rect(start_x, start_y, rect_width, rect_height);
+
+    QPixmap cropped = pixmap.copy(rect);
+
+    rec(cropped);
+
     if (event->button() == Qt::LeftButton) {
         this->close();
     }
@@ -58,13 +77,20 @@ void textrec::shootScreen() {
     pixmap = screen->grabWindow(0);
 }
 
-void textrec::rec() {
+void textrec::rec(const QPixmap &pixmap) {
+    QImage qImage = pixmap.toImage();
+
+    // Convert QImage to cv::Mat
+    cv::Mat mat(qImage.height(), qImage.width(), CV_8UC4, const_cast<uchar*>(qImage.bits()), qImage.bytesPerLine());
+    cv::cvtColor(mat, mat, cv::COLOR_BGRA2BGR); // Convert from BGRA to BGR
+
     // Initialize Tesseract OCR
     tesseract::TessBaseAPI tess;
     tess.Init(NULL, "eng"); // Specify language ("eng" for English)
 
     // Read the image using OpenCV
-    cv::Mat cvImage = cv::imread("/home/pardusumsu/code/textrec/test-imgs/yamuq.png", cv::IMREAD_COLOR);
+    // cv::Mat cvImage = cv::imread("/home/pardusumsu/code/textrec/test-imgs/yamuq.png", cv::IMREAD_COLOR);
+    cv::Mat cvImage = mat;
     if (cvImage.empty()) {
         std::cerr << "Error: Unable to open image file!" << std::endl;
     }

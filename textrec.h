@@ -31,10 +31,11 @@ public:
     textrec(QWidget *parent = nullptr);
     ~textrec();
 
-    void rec();
-    void shootScreen();
-    void resizeEvent(QResizeEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
+    int start_x;
+    int start_y;
+
+    int x_pos;
+    int y_pos;
 
 private:
     Ui::textrec *ui;
@@ -46,6 +47,11 @@ private:
     QQuickView view;
 
     void updateLabel();
-
+    void rec(const QPixmap &pixmap);
+    void shootScreen();
+    void resizeEvent(QResizeEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
 };
 #endif // TEXTREC_H
