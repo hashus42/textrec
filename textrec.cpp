@@ -22,7 +22,9 @@ textrec::textrec(QWidget *parent)
     // const QRect screenGeometry = screen()->geometry();
     // label->setMinimumSize(screenGeometry.width(), screenGeometry.height() * 0.953);
 
-    label->setPixmap(pixmap);
+    drawing_pixmap = pixmap.copy();
+
+    label->setPixmap(drawing_pixmap);
     layout->addWidget(label);
     setLayout(layout);
 }
@@ -36,12 +38,22 @@ void textrec::mouseMoveEvent(QMouseEvent *event) {
     x_pos = event->pos().x();
     y_pos = event->pos().y();
 
-
+    textrec::update();
 }
 
 void textrec::mouseReleaseEvent(QMouseEvent *event) {
     int rect_width = x_pos - start_x;
     int rect_height = y_pos - start_y;
+
+    if (rect_width < 0) {
+        rect_width = start_x - x_pos;
+        start_x = x_pos;
+    }
+
+    if (rect_height < 0) {
+        rect_height = start_y - y_pos;
+        start_y = y_pos;
+    }
 
     QRect rect(start_x, start_y, rect_width, rect_height);
 
@@ -54,18 +66,25 @@ void textrec::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
-void textrec::updateLabel() {
-    label->setPixmap(pixmap.scaled(label->size(),
-                                   Qt::KeepAspectRatio,
-                                   Qt::SmoothTransformation));
+void textrec::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(&drawing_pixmap);
+
+    QPen pen;
+    pen.setWidth(2);
+    pen.setColor(Qt::green);
+    painter.setPen(pen);
+
+    painter.drawRect(100, 100,100,1000);
 }
 
-void textrec::resizeEvent(QResizeEvent *event) {
-    QSize scaledSize = pixmap.size();
-    scaledSize.scale(label->size(), Qt::KeepAspectRatio);
-    if (scaledSize != label->pixmap().size())
-        updateLabel();
-}
+
+
+// void textrec::updateLabel() {
+//     label->setPixmap(drawing_pixmap.scaled(label->size(),
+//                                    Qt::KeepAspectRatio,
+//                                    Qt::SmoothTransformation));
+// }
 
 void textrec::shootScreen() {
     QScreen *screen = QGuiApplication::primaryScreen();
