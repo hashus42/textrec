@@ -139,6 +139,20 @@ void textrec::rec(const QPixmap &pixmap) {
     char* outText = tess.GetUTF8Text();
     std::cout << "Recognized Text:" << std::endl << outText << std::endl;
 
+    const size_t len = strlen(outText);
+
+    // Open a pipe to the xclip command
+    FILE* pipe = popen("xclip -selection clipboard", "w");
+    if (!pipe) {
+        std::cerr << "Failed to open pipe to xclip" << std::endl;
+    }
+
+    // Write the output to the pipe
+    fwrite(outText, sizeof(char), len, pipe);
+
+    // Close the pipe
+    pclose(pipe);
+
     // Clean up
     delete[] outText;
     pixDestroy(&image);

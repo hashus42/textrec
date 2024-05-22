@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Name=My Qt App
+Exec=/home/pardusumsu/code/textrec/build/Desktop_Qt_6_7_0-Release/textrec
+Icon=/home/pardusumsu/code/textrec/icons/app-icon.png
+Terminal=false
+Type=Application
