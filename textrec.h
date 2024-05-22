@@ -1,6 +1,8 @@
 #ifndef TEXTREC_H
 #define TEXTREC_H
 
+#include <string.h>
+
 #include <QWidget>
 
 #include <tesseract/baseapi.h>
@@ -13,7 +15,6 @@
 #include <QVBoxLayout>
 #include <qsize.h>
 #include <QApplication>
-#include <QResizeEvent>
 #include <QDebug>
 #include <QtQuick/QQuickView>
 #include <QPainter>
@@ -58,5 +59,8 @@ private:
     void mouseReleaseEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void drawRectangle();
+
+    void copyClipboard(char* outText);
+    void sendNotification(char* outText);
 };
 #endif // TEXTREC_H

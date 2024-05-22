@@ -1004,7 +1004,6 @@ moc_textrec.cpp: ../../textrec.h \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/QApplication \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtGui/QResizeEvent \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtCore/QDebug \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtQuick/QQuickView \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtQuick/qquickview.h \
@@ -1282,7 +1281,6 @@ main.o: ../../main.cpp ../../textrec.h \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/QApplication \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtGui/QResizeEvent \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtCore/QDebug \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtQuick/QQuickView \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtQuick/qquickview.h \
@@ -1537,7 +1535,6 @@ textrec.o: ../../textrec.cpp ../../textrec.h \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/qgridlayout.h \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/QApplication \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtWidgets/qapplication.h \
-		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtGui/QResizeEvent \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtCore/QDebug \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtQuick/QQuickView \
 		../../../../Desktop/else/Qt/6.7.0/gcc_64/include/QtQuick/qquickview.h \

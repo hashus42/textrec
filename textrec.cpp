@@ -137,8 +137,18 @@ void textrec::rec(const QPixmap &pixmap) {
 
     // Perform OCR
     char* outText = tess.GetUTF8Text();
-    std::cout << "Recognized Text:" << std::endl << outText << std::endl;
 
+    copyClipboard(outText);
+    sendNotification(outText);
+
+    // Clean up
+    delete[] outText;
+    pixDestroy(&image);
+    tess.End();
+}
+
+// Copy the text to clipboard
+void textrec::copyClipboard(char* outText) {
     const size_t len = strlen(outText);
 
     // Open a pipe to the xclip command
@@ -152,11 +162,13 @@ void textrec::rec(const QPixmap &pixmap) {
 
     // Close the pipe
     pclose(pipe);
+}
 
-    // Clean up
-    delete[] outText;
-    pixDestroy(&image);
-    tess.End();
+// Send an notification to user to inform him about recognized text
+void textrec::sendNotification(char* outText) {
+    std::string notify = "notify-send 'The recognized text' '";
+    std::string command = notify + outText + "' -t 5000";
+    system(command.c_str());
 }
 
 textrec::~textrec()
