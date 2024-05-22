@@ -7,36 +7,37 @@ textrec::textrec(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Screen shot
     shootScreen();
-    // pixmap = pixmap.scaled(pixmap.width() * 0.99, pixmap.height() * 0.98, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    // label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    // label->setAlignment(Qt::AlignCenter);
+
+    // Fine tunings to adjust window in the best borderless full window
     this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint | Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->move(-11, -11);
 
+    // label adjustments
     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     label->setAlignment(Qt::AlignCenter);
 
-    // Adjsut the label according to screen size
-    // const QRect screenGeometry = screen()->geometry();
-    // label->setMinimumSize(screenGeometry.width(), screenGeometry.height() * 0.953);
-
+    // To give tesseract drawless pixmap give copied pixmap as input to it
     drawing_pixmap = pixmap.copy();
 
+    // Set pixmap to label and label to layout
     label->setPixmap(drawing_pixmap);
     layout->addWidget(label);
     setLayout(layout);
 }
 
+// Get mouse starting point (-10 to reduce mouse size)
 void textrec::mousePressEvent(QMouseEvent *event) {
-    start_x = event->pos().x();
-    start_y = event->pos().y();
+    start_x = event->pos().x() - 10;
+    start_y = event->pos().y() - 10;
 }
 
+// Get mouse current point (-10 to reduce mouse size)
 void textrec::mouseMoveEvent(QMouseEvent *event) {
-    x_pos = event->pos().x();
-    y_pos = event->pos().y();
+    x_pos = event->pos().x() - 10;
+    y_pos = event->pos().y() - 10;
     drawRectangle();
 }
 
@@ -44,6 +45,8 @@ void textrec::mouseReleaseEvent(QMouseEvent *event) {
     int rect_width = x_pos - start_x;
     int rect_height = y_pos - start_y;
 
+    // Handles x and y positions to handle the situation that mouse is going to backward
+    // in x axis or y axis otherwise the cropping process crops the pixmap in a wierd way
     if (rect_width < 0) {
         rect_width = start_x - x_pos;
         start_x = x_pos;
@@ -54,16 +57,20 @@ void textrec::mouseReleaseEvent(QMouseEvent *event) {
         start_y = y_pos;
     }
 
+    // crops the pixmap
     QRect rect(start_x, start_y, rect_width, rect_height);
     QPixmap cropped = drawing_pixmap.copy(rect);
 
+    // give cropped image as input to tesseract function
     rec(cropped);
 
+    // Close the window after the drawing and recognition process finish
     if (event->button() == Qt::LeftButton) {
         this->close();
     }
 }
 
+// Starts to paint
 void textrec::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
     QPainter painter(this);
@@ -85,12 +92,6 @@ void textrec::drawRectangle() {
     // Update the label with the temporary pixmap
     label->setPixmap(temp_pixmap);
     label->update(); // Ensure the label is updated
-}
-
-
-
-void textrec::updateLabel() {
-    label->setPixmap(drawing_pixmap);
 }
 
 void textrec::shootScreen() {

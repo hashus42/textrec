@@ -40,7 +40,6 @@ public:
     int y_pos;
     int rect_width;
     int rect_height;
-    bool drawing;
 
 private:
     Ui::textrec *ui;
@@ -52,7 +51,6 @@ private:
     QSize screenSize = QApplication::primaryScreen()->size();
     QQuickView view;
 
-    void updateLabel();
     void rec(const QPixmap &pixmap);
     void shootScreen();
     void mousePressEvent(QMouseEvent *event) override;
