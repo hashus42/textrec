@@ -37,8 +37,7 @@ void textrec::mousePressEvent(QMouseEvent *event) {
 void textrec::mouseMoveEvent(QMouseEvent *event) {
     x_pos = event->pos().x();
     y_pos = event->pos().y();
-
-    textrec::update();
+    drawRectangle();
 }
 
 void textrec::mouseReleaseEvent(QMouseEvent *event) {
@@ -56,8 +55,7 @@ void textrec::mouseReleaseEvent(QMouseEvent *event) {
     }
 
     QRect rect(start_x, start_y, rect_width, rect_height);
-
-    QPixmap cropped = pixmap.copy(rect);
+    QPixmap cropped = drawing_pixmap.copy(rect);
 
     rec(cropped);
 
@@ -66,25 +64,34 @@ void textrec::mouseReleaseEvent(QMouseEvent *event) {
     }
 }
 
-void textrec::paintEvent(QPaintEvent *event)
-{
-    QPainter painter(&drawing_pixmap);
+void textrec::paintEvent(QPaintEvent *event) {
+    QWidget::paintEvent(event);
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, drawing_pixmap);
+}
+
+void textrec::drawRectangle() {
+    // Create a temporary pixmap to draw the rectangle
+    QPixmap temp_pixmap = drawing_pixmap;
+    QPainter painter(&temp_pixmap);
 
     QPen pen;
     pen.setWidth(2);
     pen.setColor(Qt::green);
     painter.setPen(pen);
 
-    painter.drawRect(100, 100,100,1000);
+    painter.drawRect(start_x, start_y, x_pos - start_x, y_pos - start_y);
+
+    // Update the label with the temporary pixmap
+    label->setPixmap(temp_pixmap);
+    label->update(); // Ensure the label is updated
 }
 
 
 
-// void textrec::updateLabel() {
-//     label->setPixmap(drawing_pixmap.scaled(label->size(),
-//                                    Qt::KeepAspectRatio,
-//                                    Qt::SmoothTransformation));
-// }
+void textrec::updateLabel() {
+    label->setPixmap(drawing_pixmap);
+}
 
 void textrec::shootScreen() {
     QScreen *screen = QGuiApplication::primaryScreen();
