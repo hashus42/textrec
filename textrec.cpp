@@ -166,7 +166,7 @@ void textrec::copyClipboard(char* outText) {
 
 // Send an notification to user to inform him about recognized text
 void textrec::sendNotification(char* outText) {
-    std::string notify = "notify-send 'The recognized text' '";
+    std::string notify = "notify-send 'The recognized text copied to clipboard' '";
     std::string command = notify + outText + "' -t 5000";
     system(command.c_str());
 }
