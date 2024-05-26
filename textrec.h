@@ -20,6 +20,7 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QPen>
+#include <QKeyEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -57,6 +58,7 @@ private:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void drawRectangle();
 

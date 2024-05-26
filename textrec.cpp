@@ -26,6 +26,8 @@ textrec::textrec(QWidget *parent)
     label->setPixmap(drawing_pixmap);
     layout->addWidget(label);
     setLayout(layout);
+
+    setWindowFlags (Qt::Popup);
 }
 
 // Get mouse starting point (-10 to reduce mouse size)
@@ -169,6 +171,12 @@ void textrec::sendNotification(char* outText) {
     std::string notify = "notify-send 'The recognized text copied to clipboard' '";
     std::string command = notify + outText + "' -t 5000";
     system(command.c_str());
+}
+
+void textrec::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Escape) {
+        QCoreApplication::exit();
+    }
 }
 
 textrec::~textrec()
